@@ -5,14 +5,14 @@ services:
     depends_on:
       - mongo
     environment:
-      - MONGO_URL=mongodb://mongo:27017
+      - MONGO_URL=mongodb://mongo:27017 # Ensure the app connects to the mongo container
     networks:
       - app-network
     ports:
       - '3000:3000'
   mongo:
     image: mongo:latest
-    container_name: mongo
+    container_name: mongo # Mongo container name
     networks:
       - app-network
     healthcheck:
