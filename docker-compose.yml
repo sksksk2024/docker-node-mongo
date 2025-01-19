@@ -1,15 +1,18 @@
 version: '3'
 services:
   app:
-    container_name: docker-node-mongo
-    restart: always
-    build: . # This uses the Dockerfile in your current directory
-    ports:
-      - '3000:3000'
-    links:
+    image: sksks25/docker-node-mongo_app:latest
+    depends_on:
       - mongo
+    environment:
+      - MONGO_URL=mongodb://mongo:27017
+    networks:
+      - app-network
   mongo:
+    image: mongo:latest
     container_name: mongo
-    image: mongo
-    ports:
-      - '27017:27017'
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge
