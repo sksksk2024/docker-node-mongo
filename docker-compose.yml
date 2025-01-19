@@ -3,7 +3,7 @@ services:
   app:
     container_name: docker-node-mongo
     restart: always
-    build: .
+    build: . # This uses the Dockerfile in your current directory
     ports:
       - '3000:3000'
     links:
