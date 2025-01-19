@@ -8,11 +8,17 @@ services:
       - MONGO_URL=mongodb://mongo:27017
     networks:
       - app-network
+    ports:
+      - '3000:3000'
   mongo:
     image: mongo:latest
     container_name: mongo
     networks:
       - app-network
+    healthcheck:
+      test: ['CMD', 'mongo', '--eval', 'db.runCommand({ connectionStatus: 1 })']
+      interval: 30s
+      retries: 5
 networks:
   app-network:
     driver: bridge
