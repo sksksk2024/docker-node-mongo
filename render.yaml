@@ -7,7 +7,6 @@ services:
     envVars:
       - key: MONGO_URI
         value: mongodb://mongo:27017/docker-node-mongo # Use the private service name.
-
     ports:
       - 3000
 
@@ -15,5 +14,9 @@ services:
     type: private_service
     env: docker
     plan: free
-    dockerfile_path: ./mongo.Dockerfile
+    image: mongo:5
+    container_name: mongo
+    ports:
+      - '27017:27017'
     healthCheckCommand: "mongo --eval 'db.runCommand({ connectionStatus: 1 })'"
+    dockerfile_path: ./mongo.Dockerfile
