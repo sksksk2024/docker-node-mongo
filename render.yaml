@@ -6,7 +6,8 @@ services:
     dockerfile_path: ./Dockerfile
     envVars:
       - key: MONGO_URL
-        value: mongodb://mongo:27017/docker-node-mongo
+        value: mongodb://mongo:27017/docker-node-mongo || mongodb://127.0.0.1:27017/docker-node-mongo
+
     ports:
       - 3000
 
