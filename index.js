@@ -1,37 +1,44 @@
 const express = require('express');
 const mongoose = require('mongoose');
+require('dotenv').config(); // Use dotenv for local environment variable management
 
 const app = express();
 
 app.set('view engine', 'ejs');
-
 app.use(express.urlencoded({ extended: false }));
 
-// Connect to MongoDB
+const mongoUrl =
+  process.env.MONGO_URL || 'mongodb://mongo:27017/docker-node-mongo';
+
 mongoose
-  .connect(process.env.MONGO_URL || 'mongodb://mongo:27017/docker-node-mongo', {
+  .connect(mongoUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
   .then(() => console.log('MongoDB Connected'))
-  .catch((err) => console.log(err));
+  .catch((err) => console.error('MongoDB connection error:', err));
 
 const Item = require('./models/Item');
 
-app.get('/', (req, res) => {
-  Item.find()
-    .then((items) => res.render('index', { items }))
-    .catch((err) => res.status(404).json({ msg: 'No items found' }));
+app.get('/', async (req, res) => {
+  try {
+    const items = await Item.find();
+    res.render('index', { items });
+  } catch (err) {
+    res.status(404).json({ msg: 'No items found' });
+  }
 });
 
-app.post('/item/add', (req, res) => {
-  const newItem = new Item({
-    name: req.body.name,
-  });
-
-  newItem.save().then((item) => res.redirect('/'));
+app.post('/item/add', async (req, res) => {
+  try {
+    const newItem = new Item({ name: req.body.name });
+    await newItem.save();
+    res.redirect('/');
+  } catch (err) {
+    res.status(500).json({ msg: 'Error adding item' });
+  }
 });
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 
-app.listen(port, () => console.log('Server running...'));
+app.listen(port, () => console.log(`Server running on port ${port}...`));

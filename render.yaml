@@ -2,18 +2,17 @@ services:
   - name: app
     type: web
     env: docker
-    plan: free # Choose a plan; free for testing
-    dockerfile_path: ./Dockerfile # Path to your Dockerfile
+    plan: free
+    dockerfile_path: ./Dockerfile
     envVars:
       - key: MONGO_URL
-        value: mongodb://mongo.internal:27017/docker-node-mongo # Use the correct internal service name
-    buildCommand: '' # Leave empty since Dockerfile handles it
-    startCommand: '' # Leave empty since Dockerfile handles it
+        value: mongodb://mongo.internal:27017/docker-node-mongo
     ports:
       - 3000
+
   - name: mongo
     type: private_service
     env: docker
     plan: free
-    dockerfile_path: mongo # Use the default MongoDB image
+    dockerfile_path: ./mongo.Dockerfile # Custom Dockerfile for MongoDB
     healthCheckPath: /
