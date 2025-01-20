@@ -6,7 +6,7 @@ services:
     dockerfile_path: ./Dockerfile
     envVars:
       - key: MONGO_URL
-        value: mongodb://mongo.internal:27017/docker-node-mongo
+      value: mongodb://mongo:27017/docker-node-mongo
     ports:
       - 3000
 
@@ -16,3 +16,4 @@ services:
     plan: free
     dockerfile_path: ./mongo.Dockerfile # Custom Dockerfile for MongoDB
     healthCheckPath: /
+    healthCheckCommand: 'mongo --eval "db.stats()"'
