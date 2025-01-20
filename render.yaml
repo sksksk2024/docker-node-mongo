@@ -8,12 +8,11 @@ services:
       - key: MONGO_URL
         value: mongodb://mongo:27017/docker-node-mongo
     ports:
-      - 10000
+      - 3000
 
   - name: mongo
     type: private_service
     env: docker
     plan: free
-    dockerfile_path: ./mongo.Dockerfile # Custom Dockerfile for MongoDB
-    healthCheckPath: /
+    dockerfile_path: ./mongo.Dockerfile
     healthCheckCommand: 'mongo --eval "db.runCommand({ connectionStatus: 1 })"'
