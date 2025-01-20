@@ -6,6 +6,7 @@ const app = express();
 
 const dns = require('dns');
 
+// Log MongoDB hostname resolution status
 dns.lookup('mongo', (err, address, family) => {
   if (err) {
     console.error('DNS resolution failed:', err.message);

@@ -16,4 +16,4 @@ services:
     plan: free
     dockerfile_path: ./mongo.Dockerfile # Custom Dockerfile for MongoDB
     healthCheckPath: /
-    healthCheckCommand: 'echo "MongoDB is up"'
+    healthCheckCommand: 'mongo --eval "db.runCommand({ connectionStatus: 1 })"'
