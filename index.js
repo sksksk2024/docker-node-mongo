@@ -1,9 +1,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config(); // Use dotenv for local environment variable management
-
+const cors = require('cors');
+app.use(cors());
 const app = express();
-
+app.use(express.static('public'));
 const dns = require('dns');
 
 // Log MongoDB hostname resolution status
