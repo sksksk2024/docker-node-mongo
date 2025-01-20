@@ -1,0 +1,19 @@
+services:
+  - name: app
+    type: web
+    env: docker
+    plan: free # Choose a plan; free for testing
+    dockerfile_path: ./Dockerfile # Path to your Dockerfile
+    envVars:
+      - key: MONGO_URL
+        value: mongodb://mongo:27017/docker-node-mongo
+    buildCommand: '' # Leave empty since Dockerfile handles it
+    startCommand: '' # Leave empty since Dockerfile handles it
+    ports:
+      - 3000
+  - name: mongo
+    type: private_service
+    env: docker
+    plan: free
+    dockerfile_path: mongo # Use the default MongoDB image
+    healthCheckPath: /

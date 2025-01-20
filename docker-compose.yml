@@ -1,24 +1,48 @@
-version: '3'
+# version: '3'
+# services:
+#   app:
+#     image: sksks25/docker-node-mongo_app:latest
+#     depends_on:
+#       - mongo
+#     environment:
+#       - MONGO_URL=mongodb://mongo:27017 # Ensure the app connects to the mongo container
+#     networks:
+#       - app-network
+#     ports:
+#       - '3000:3000'
+#   mongo:
+#     image: mongo:latest
+#     container_name: mongo # Mongo container name
+#     networks:
+#       - app-network
+#     healthcheck:
+#       test: ['CMD', 'mongo', '--eval', 'db.runCommand({ connectionStatus: 1 })']
+#       interval: 30s
+#       retries: 5
+# networks:
+#   app-network:
+#     driver: bridge
+
+version: '3.9'
 services:
   app:
-    image: sksks25/docker-node-mongo_app:latest
-    depends_on:
-      - mongo
-    environment:
-      - MONGO_URL=mongodb://mongo:27017 # Ensure the app connects to the mongo container
-    networks:
-      - app-network
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - '3000:3000'
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/docker-node-mongo
+    depends_on:
+      - mongo
+
   mongo:
-    image: mongo:latest
-    container_name: mongo # Mongo container name
-    networks:
-      - app-network
-    healthcheck:
-      test: ['CMD', 'mongo', '--eval', 'db.runCommand({ connectionStatus: 1 })']
-      interval: 30s
-      retries: 5
-networks:
-  app-network:
-    driver: bridge
+    image: mongo:5
+    container_name: mongo
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
